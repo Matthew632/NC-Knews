@@ -9,4 +9,10 @@ exports.seed = function (knex, Promise) {
                 .insert(topicData)
                 .returning('*'),
         )
+        .then(insertedTopics => {
+            const topicsRef = insertedTopics;
+            return knex('users')
+                .insert(userData)
+                .returning('*')
+        });
 };
