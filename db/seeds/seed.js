@@ -2,6 +2,8 @@ const {
   articleData, topicData, userData, commentData,
 } = require('../data');
 
+const { createRef, formatDate } = require('../../utils/seed_utils.js');
+
 exports.seed = function (knex, Promise) {
   return knex.migrate
     .rollback()
@@ -17,8 +19,9 @@ exports.seed = function (knex, Promise) {
       return Promise.all([topicInsertions, userInsertions]);
     })
     .then((topicInsertions, userInsertions) => {
+      console.log('here i am');
       const articleInsertions = knex('articles')
-        .insert(articleData)
+        .insert(formatDate(articleData))
         .returning('*');
       return Promise.all([topicInsertions, userInsertions, articleInsertions]);
     });

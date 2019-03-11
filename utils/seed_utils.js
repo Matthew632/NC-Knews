@@ -1,16 +1,24 @@
 function createRef(ownersArr, key, value) {
-    const refObj = {};
-    ownersArr.forEach((owner) => {
-        refObj[owner[key]] = owner[value];
-    });
-    return refObj;
+  const refObj = {};
+  ownersArr.forEach((owner) => {
+    refObj[owner[key]] = owner[value];
+  });
+  return refObj;
 }
 
 function formatDate(objArr) {
-    const newArr = objArr.map((obj) => {
-        obj[created_at] = 'testing';
-        return newArr;
-    })
+  return objArr.reduce((acc, obj) => {
+    const newObj = obj;
+    const d = new Date(newObj.created_at);
+    const year = d.getFullYear();
+    const month = (`0${d.getMonth() + 1}`).slice(-2);
+    const day = (`0${d.getDate()}`).slice(-2);
+    const r = `${year}-${month}-${day}`;
+    console.log(r);
+    newObj.created_at = r;
+    acc.push(newObj);
+    return acc;
+  }, []);
 }
 
 // function formatArr(shopArr, ref) {
