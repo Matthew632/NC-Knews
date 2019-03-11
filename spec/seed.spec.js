@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { createRef, formatArr, formatTreasures } = require('../utils/seed_utils.js');
+const { createRef, formatDate } = require('../utils/seed_utils.js');
 
 describe('createRef', () => {
   it('test if a reference object is created from owner array', () => {
@@ -28,46 +28,42 @@ describe('createRef', () => {
     const result = { 'Wintheiser, Bogisich and Howell': 99, 'Ratke, Marvin and Gorczany': 100 };
     expect(createRef(testShopArr, 'shop_name', 'shop_id')).to.eql(result);
   });
-  it('test if an new array of objects is created using a ref in the correct format', () => {
-    const ref = { Augustus: 90, Trevion: 91 };
-    const testShops = [{
-      shop_name: 'Spinka - Zieme',
-      owner: 'Augustus',
-      slogan: 'Face to face analyzing complexity',
+});
+
+describe('formatDate', () => {
+  it('test if a reference object is created from owner array', () => {
+    const testArticles = [{
+      title: 'Running a Node App',
+      topic: 'coding',
+      author: 'jessjelly',
+      body:
+        'This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.',
+      created_at: 1471522072389,
     },
     {
-      shop_name: 'Spinka - Zieme',
-      owner: 'Trevion',
-      slogan: 'Face to face analyzing complexity',
+      title: "The Rise Of Thinking Machines: How IBM's Watson Takes On The World",
+      topic: 'coding',
+      author: 'jessjelly',
+      body:
+        'Many people know Watson as the IBM-developed cognitive super computer that won the Jeopardy! gameshow in 2011. In truth, Watson is not actually a computer but a set of algorithms and APIs, and since winning TV fame (and a $1 million prize) IBM has put it to use tackling tough problems in every industry from healthcare to finance. Most recently, IBM has announced several new partnerships which aim to take things even further, and put its cognitive capabilities to use solving a whole new range of problems around the world.',
+      created_at: 1500584273256,
     }];
     const result = [{
-      owner_id: 90,
-      shop_name: 'Spinka - Zieme',
-      slogan: 'Face to face analyzing complexity',
+      title: 'Running a Node App',
+      topic: 'coding',
+      author: 'jessjelly',
+      body:
+        'This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.',
+      created_at: 1471522072389,
     },
     {
-      owner_id: 91,
-      shop_name: 'Spinka - Zieme',
-      slogan: 'Face to face analyzing complexity',
-    }];
-    expect(formatArr(testShops, ref)).to.eql(result);
-  });
-  it('test if an new array of objects is created using a ref in the correct tresure format', () => {
-    const ref = { 'Wintheiser, Bogisich and Howell': 99 };
-    const testTreasure = [{
-      treasure_name: 'Open-source Intelligent Steel Ball',
-      colour: 'indigo',
-      age: 666,
-      cost_at_auction: 36121,
-      shop: 'Wintheiser, Bogisich and Howell',
-    }];
-    const result = [{
-      treasure_name: 'Open-source Intelligent Steel Ball',
-      colour: 'indigo',
-      age: 666,
-      cost_at_auction: 36121,
-      shop_id: 99,
-    }];
-    expect(formatTreasures(testTreasure, ref)).to.eql(result);
+      title: "The Rise Of Thinking Machines: How IBM's Watson Takes On The World",
+      topic: 'coding',
+      author: 'jessjelly',
+      body:
+        'Many people know Watson as the IBM-developed cognitive super computer that won the Jeopardy! gameshow in 2011. In truth, Watson is not actually a computer but a set of algorithms and APIs, and since winning TV fame (and a $1 million prize) IBM has put it to use tackling tough problems in every industry from healthcare to finance. Most recently, IBM has announced several new partnerships which aim to take things even further, and put its cognitive capabilities to use solving a whole new range of problems around the world.',
+      created_at: 1500584273256,
+    }]
+    expect(formatDate(testArticles)).to.eql(result);
   });
 });

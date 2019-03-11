@@ -6,6 +6,13 @@ function createRef(ownersArr, key, value) {
     return refObj;
 }
 
+function formatDate(objArr) {
+    const newArr = objArr.map((obj) => {
+        obj[created_at] = 'testing';
+        return newArr;
+    })
+}
+
 // function formatArr(shopArr, ref) {
 //   newArr = [];
 //   shopArr.forEach((shop) => {
@@ -31,4 +38,4 @@ function createRef(ownersArr, key, value) {
 //   });
 //   return newArr;
 // }
-module.exports = { createRef };
+module.exports = { createRef, formatDate };
