@@ -18,11 +18,13 @@ exports.seed = function (knex, Promise) {
         .returning('*');
       return Promise.all([topicInsertions, userInsertions]);
     })
-    .then((topicInsertions, userInsertions) => {
-      console.log('here i am');
+    .then(([topicInsertions, userInsertions]) => {
       const articleInsertions = knex('articles')
         .insert(formatDate(articleData))
         .returning('*');
       return Promise.all([topicInsertions, userInsertions, articleInsertions]);
+    })
+    .then(([topicInsertions, userInsertions, articleInsertions]) => {
+      console.log(createRef(articleInsertions, 'title', 'article_id'));
     });
 };
