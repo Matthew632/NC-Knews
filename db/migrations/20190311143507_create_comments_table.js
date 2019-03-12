@@ -12,7 +12,8 @@ exports.up = function (knex, Promise) {
 };
 
 exports.down = function (knex, Promise) {
-
+  console.log('removing the comments table...');
+  return knex.schema.dropTable('comments');
 };
 
 // Each comment should have:
