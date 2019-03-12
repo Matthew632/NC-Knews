@@ -26,7 +26,7 @@ exports.seed = function (knex, Promise) {
     })
     .then(([topicInsertions, userInsertions, articleInsertions]) => {
       const commentInsertions = knex('comments')
-        .insert(formatComments(formatDate(commentData), createRef(articleInsertions)))
+        .insert(formatComments(formatDate(commentData), createRef(articleInsertions, 'title', 'article_id')))
         .returning('*');
       return Promise.all([topicInsertions, userInsertions, articleInsertions, commentInsertions]);
     });

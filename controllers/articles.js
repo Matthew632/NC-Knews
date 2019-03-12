@@ -2,7 +2,6 @@ const { fetchArticles, postArticle } = require('../models/articles');
 
 function getArticles(req, res, next) {
   fetchArticles().then((fetchedArticles) => {
-    console.log(fetchedArticles);
     res.status(200).send({ articles: fetchedArticles });
   });
 }
