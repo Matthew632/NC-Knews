@@ -1,22 +1,16 @@
-const fetchTopics = require('../models/topics');
+const { fetchTopics, postTopic } = require('../models/topics');
 
 function getTopics(req, res, next) {
-  console.log('you are in the controller');
   fetchTopics().then((fetchedTopics) => {
-    res.status(200).send(fetchedTopics);
+    res.status(200).send({ topics: fetchedTopics });
   });
 }
 
-module.exports = getTopics;
+function insertTopic(req, res, next) {
+  postTopic(req.body).then((postedTopic) => {
+    console.log('you are in the controller', postedTopic[0]);
+    res.status(201).send({ topics: postedTopic });
+  });
+}
 
-// const fetchTreasures = require("../models/treasures");
-
-// const getTreasures = (req, res, next) => {
-//     const { limit } = req.query.limit;
-//     console.log('this is the limit:', limit);
-//     fetchTreasures(limit, sortBy, colour).then(fetchedTreasures => {
-//         res.status(200).send({ treasures: fetchedTreasures });
-//     });
-// };
-
-// module.exports = getTreasures;
+module.exports = { getTopics, insertTopic };

@@ -1,12 +1,18 @@
 const connection = require('../db/connection');
 
-const fetchTopics = () => (
-  connection
-    .select('*')
-    .from('topics')
-);
+const fetchTopics = () => connection
+  .select('*')
+  .from('topics');
 
-module.exports = fetchTopics;
+const postTopic = (req) => {
+  console.log('you are in the model', req);
+  return connection
+    .insert(req)
+    .into('topics')
+    .returning('*');
+};
+
+module.exports = { fetchTopics, postTopic };
 
 
 // const connection = require("../db/connection");

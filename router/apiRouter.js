@@ -1,7 +1,8 @@
 const apiRouter = require('express').Router();
-const getTopics = require('../controllers/topics.js');
+const { getTopics, insertTopic } = require('../controllers/topics.js');
 
 apiRouter.route('/topics')
-  .get(getTopics);
+  .get(getTopics)
+  .post(insertTopic);
 
 module.exports = apiRouter;
