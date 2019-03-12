@@ -21,7 +21,7 @@ function createRef(ownersArr, key, value) {
 }
 
 function formatComments(commentsArr, articleRef) {
-  newArr = [];
+  const newArr = [];
   commentsArr.forEach(((comment) => {
     newArr.push({
       author: comment.created_by,
