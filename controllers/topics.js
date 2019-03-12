@@ -1,8 +1,10 @@
-// const fetchTopics = require("../models/topics");
+const fetchTopics = require('../models/topics');
 
 function getTopics(req, res, next) {
   console.log('you are in the controller');
-  res.status(200).send([{ test: 'testing' }, { tests: 'testings' }]);
+  fetchTopics().then((fetchedTopics) => {
+    res.status(200).send(fetchedTopics);
+  });
 }
 
 module.exports = getTopics;
