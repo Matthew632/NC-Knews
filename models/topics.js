@@ -4,13 +4,10 @@ const fetchTopics = () => connection
   .select('*')
   .from('topics');
 
-const postTopic = (req) => {
-  console.log('you are in the model', req);
-  return connection
-    .insert(req)
-    .into('topics')
-    .returning('*');
-};
+const postTopic = req => connection
+  .insert(req)
+  .into('topics')
+  .returning('*');
 
 module.exports = { fetchTopics, postTopic };
 

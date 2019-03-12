@@ -8,32 +8,51 @@ const connection = require('../db/connection');
 
 
 describe('/api', () => {
-    beforeEach(() => connection.seed.run());
-    after(() => connection.destroy());
-    describe('/topics', () => {
-        it('GET status:200 responds with an array of topic objects', () => request
-            .get('/api/topics')
-            .expect(200)
-            .then((response) => {
-                expect(response.body).to.be.an('object');
-                expect(response.body.topics).to.have.lengthOf(2);
-                expect(response.body.topics[0]).to.contain.keys(
-                    'slug',
-                    'description',
-                );
-            }));
-        it('POST status:201 responds with inserted object', () => request
-            .post('/api/topics').send({ slug: 'test slug', description: 'example body text' })
-            .expect(201)
-            .then((response) => {
-                expect(response.body).to.be.an('object');
-                expect(response.body.topics[0]).to.contain.keys(
-                    'slug',
-                    'description',
-                );
-            }));
-    });
+  beforeEach(() => connection.seed.run());
+  after(() => connection.destroy());
+  describe('/topics', () => {
+    it('GET status:200 responds with an array of topic objects', () => request
+      .get('/api/topics')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.topics).to.have.lengthOf(2);
+        expect(response.body.topics[0]).to.contain.keys(
+          'slug',
+          'description',
+        );
+      }));
+    it('POST status:201 responds with inserted object', () => request
+      .post('/api/topics').send({ slug: 'test slug', description: 'example body text' })
+      .expect(201)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.topics[0]).to.contain.keys(
+          'slug',
+          'description',
+        );
+      }));
+  });
+  describe('/articles', () => {
+    it('GET status:200 responds with an array of article objects', () => request
+      .get('/api/articles')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(12);
+        expect(response.body.articles[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+      }));
+  });
 });
+
 // const request = supertest(app);
 // describe("/api", () => {
 //   describe("/treasures", () => {
