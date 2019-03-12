@@ -2,7 +2,7 @@ const {
   articleData, topicData, userData, commentData,
 } = require('../data');
 
-const { createRef, formatDate } = require('../../utils/seed_utils.js');
+const { createRef, formatDate, formatComments } = require('../../utils/seed_utils.js');
 
 exports.seed = function (knex, Promise) {
   return knex.migrate
@@ -25,6 +25,9 @@ exports.seed = function (knex, Promise) {
       return Promise.all([topicInsertions, userInsertions, articleInsertions]);
     })
     .then(([topicInsertions, userInsertions, articleInsertions]) => {
-      console.log(createRef(articleInsertions, 'title', 'article_id'));
+      const commentInsertions = knex('comments')
+        .insert(formatComments(formatDate(commentData), createRef(articleInsertions)))
+        .returning('*');
+      return Promise.all([topicInsertions, userInsertions, articleInsertions, commentInsertions]);
     });
 };

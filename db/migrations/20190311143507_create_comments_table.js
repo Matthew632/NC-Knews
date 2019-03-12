@@ -7,7 +7,7 @@ exports.up = function (knex, Promise) {
     commentsTable.integer('article_id').references('article_id').inTable('articles');
     commentsTable.integer('votes').defaultTo(0);
     commentsTable.date('created_at').defaultTo(knex.fn.now());
-    commentsTable.string('body');
+    commentsTable.string('body', 100000);
   });
 };
 
@@ -15,12 +15,3 @@ exports.down = function (knex, Promise) {
   console.log('removing the comments table...');
   return knex.schema.dropTable('comments');
 };
-
-// Each comment should have:
-
-//     comment_id which is the primary key
-//     author field that references a user's primary key (username)
-//     article_id field that references an article's primary key
-//     votes defaults to 0
-//     created_at defaults to the current date
-//     body
