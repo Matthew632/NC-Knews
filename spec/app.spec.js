@@ -50,6 +50,86 @@ describe('/api', () => {
           'comment_count',
         );
       }));
+    it('check author query on articles', () => request
+      .get('/api/articles?author=icellusedkars')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(6);
+        expect(response.body.articles[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+      }));
+    it('check topic query on articles', () => request
+      .get('/api/articles?topic=mitch')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(11);
+        expect(response.body.articles[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+      }));
+    it('check both author and topic query on articles', () => request
+      .get('/api/articles?author=rogersop&topic=mitch')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(2);
+        expect(response.body.articles[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+      }));
+    it('check sort_by and order on comment_count column', () => request
+      .get('/api/articles?sort_by=comment_count&order=asc')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(12);
+        expect(response.body.articles[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+      }));
+    it('check sort_by and order', () => request
+      .get('/api/articles?sort_by=title&order=asc')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(12);
+        expect(response.body.articles[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+      }));
   });
 });
 
