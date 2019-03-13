@@ -1,10 +1,11 @@
-const { fetchArticles, fetchArticle, postArticle } = require('../models/articles');
+const {
+  fetchArticles, fetchArticle, postArticle, patchVotes,
+} = require('../models/articles');
 
 function getArticles(req, res, next) {
   let { sort_by } = req.query;
   const { order } = req.query;
   const query = {};
-  console.log('this is the article id:', req.params);
   if (req.query.author) { query['articles.author'] = req.query.author; }
   if (req.query.topic) { query['articles.topic'] = req.query.topic; }
   if (sort_by !== undefined && sort_by !== 'comment_count') { sort_by = `articles.${sort_by}`; }
@@ -26,8 +27,19 @@ function insertArticle(req, res, next) {
     title: req.body.title, body: req.body.body, topic: req.body.topic, author: req.body.username,
   };
   postArticle(insertArt).then((postedArticle) => {
-    res.status(201).send({ articles: postedArticle });
+    res.status(201).send({ article: postedArticle });
   });
 }
 
-module.exports = { getArticles, getArticle, insertArticle };
+function patchArticle(req, res, next) {
+  // const { article_id } = req.params;
+  const { inc_votes } = req.body;
+  patchVotes(req.params, inc_votes).then((patchedArticle) => {
+    console.log('patched article', patchedArticle);
+    res.status(201).send({ article: patchedArticle });
+  });
+}
+
+module.exports = {
+  getArticles, getArticle, insertArticle, patchArticle,
+};

@@ -22,4 +22,13 @@ const postArticle = req => connection
   .into('articles')
   .returning('*');
 
-module.exports = { fetchArticles, fetchArticle, postArticle };
+const patchVotes = (article_id, votes) => connection
+  .select('*')
+  .from('articles')
+  .where(article_id)
+  .increment('votes', votes)
+  .returning('*');
+
+module.exports = {
+  fetchArticles, fetchArticle, postArticle, patchVotes,
+};
