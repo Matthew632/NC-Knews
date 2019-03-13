@@ -9,9 +9,12 @@ const fetchArticles = (query, sort_by = 'articles.article_id', order = 'desc') =
   .leftJoin('comments', 'comments.article_id', 'articles.article_id')
   .groupBy('articles.article_id');
 
-const postArticles = req => connection
-  .insert(req)
-  .into('articles')
-  .returning('*');
+const postArticle = (req) => {
+  console.log('this is in the model', req);
+  return connection
+    .insert(req)
+    .into('articles')
+    .returning('*');
+};
 
-module.exports = { fetchArticles, postArticles };
+module.exports = { fetchArticles, postArticle };

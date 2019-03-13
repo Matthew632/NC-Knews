@@ -1,3 +1,3 @@
 \c nc_knews_test;
 
-SELECT * FROM articles;
+SELECT article_id, title FROM articles;

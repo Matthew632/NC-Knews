@@ -15,7 +15,11 @@ function getArticles(req, res, next) {
 }
 
 function insertArticle(req, res, next) {
-  postArticle(req.body).then((postedArticle) => {
+  const insertArt = {
+    title: req.body.title, body: req.body.body, topic: req.body.topic, author: req.body.username,
+  };
+  console.log('this is the insert object:', insertArt);
+  postArticle(insertArt).then((postedArticle) => {
     res.status(201).send({ articles: postedArticle });
   });
 }

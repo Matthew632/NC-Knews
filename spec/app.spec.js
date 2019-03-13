@@ -130,6 +130,23 @@ describe('/api', () => {
           'comment_count',
         );
       }));
+    it('POST status:201 responds with inserted article object', () => request
+      .post('/api/articles').send({
+        title: 'a title', body: 'some words', topic: 'mitch', username: 'icellusedkars',
+      })
+      .expect(201)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles[0]).to.contain.keys(
+          'article_id',
+          'author',
+          'created_at',
+          'title',
+          'topic',
+          'votes',
+          'body',
+        );
+      }));
   });
 });
 
