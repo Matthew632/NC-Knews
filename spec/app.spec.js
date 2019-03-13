@@ -185,4 +185,26 @@ describe('/api', () => {
       .delete('/api/articles/7')
       .expect(204));
   });
+  describe('/articles/:article_id/comments', () => {
+    it('GET status:200 responds with an array of comment objects', () => request
+      .get('/api/articles/5/comments')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.comments).to.have.lengthOf(2);
+        expect(response.body.comments[0]).to.contain.keys(
+          'comment_id', 'votes', 'created_at', 'author', 'body',
+        );
+      }));
+    it('check sort_by and order query on get comments', () => request
+      .get('/api/articles/5/comments?sort_by=author&order=asc')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.comments).to.have.lengthOf(2);
+        expect(response.body.comments[0]).to.contain.keys(
+          'comment_id', 'votes', 'created_at', 'author', 'body',
+        );
+      }));
+  });
 });
