@@ -241,4 +241,42 @@ describe('/api', () => {
       .delete('/api/comments/2')
       .expect(204));
   });
+  describe('/users', () => {
+    it('GET status:200 responds with an array of user objects', () => request
+      .get('/api/users')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.users).to.have.lengthOf(3);
+        expect(response.body.users[0]).to.contain.keys(
+          'username',
+          'avatar_url',
+          'name',
+        );
+      }));
+    it('POST status:201 responds with inserted user object', () => request
+      .post('/api/users').send({ username: 'steve123', avatar_url: 'www.example.com', name: 'steve' })
+      .expect(201)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.user[0]).to.contain.keys(
+          'username',
+          'avatar_url',
+          'name',
+        );
+        expect(response.body.user[0].name).to.eql('steve');
+      }));
+    it('GET status:200 responds with specific user objects', () => request
+      .get('/api/users/icellusedkars')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.user[0]).to.contain.keys(
+          'username',
+          'avatar_url',
+          'name',
+        );
+        expect(response.body.user[0].name).to.eql('sam');
+      }));
+  });
 });

@@ -6,6 +6,7 @@ const {
 const {
   getComments, insertComment, patchComment, deleteComment,
 } = require('../controllers/comments.js');
+const { getUsers, insertUser, getUser } = require('../controllers/users.js');
 
 apiRouter.route('/topics')
   .get(getTopics)
@@ -27,6 +28,13 @@ apiRouter.route('/articles/:article_id')
 apiRouter.route('/articles')
   .get(getArticles)
   .post(insertArticle);
+
+apiRouter.route('/users/:username')
+  .get(getUser);
+
+apiRouter.route('/users')
+  .get(getUsers)
+  .post(insertUser);
 
 
 module.exports = apiRouter;
