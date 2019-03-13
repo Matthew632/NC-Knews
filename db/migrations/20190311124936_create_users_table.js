@@ -12,8 +12,3 @@ exports.down = function (knex, Promise) {
   console.log('removing the users table...');
   return knex.schema.dropTable('users');
 };
-
-
-// username which is the primary key & unique
-// avatar_url
-// name

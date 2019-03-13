@@ -1,4 +1,6 @@
-const { fetchComments, postComment } = require('../models/comments');
+const {
+  fetchComments, postComment, amendVotes, delComment,
+} = require('../models/comments');
 
 function getComments(req, res, next) {
   const { sort_by } = req.query;
@@ -14,12 +16,24 @@ function insertComment(req, res, next) {
     body: req.body.body,
     article_id: req.params.article_id,
   };
-  console.log('this is the comments:', newComment);
   postComment(newComment).then((postedComment) => {
     res.status(201).send({ comment: postedComment });
   });
 }
 
+function patchComment(req, res, next) {
+  const { inc_votes } = req.body;
+  amendVotes(req.params, inc_votes).then((patchedComment) => {
+    res.status(200).send({ comment: patchedComment });
+  });
+}
+
+function deleteComment(req, res, next) {
+  delComment(req.params).then(() => {
+    res.sendStatus(204);
+  });
+}
+
 module.exports = {
-  getComments, insertComment,
+  getComments, insertComment, patchComment, deleteComment,
 };

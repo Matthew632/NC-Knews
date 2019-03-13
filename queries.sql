@@ -1,3 +1,4 @@
 \c nc_knews_test;
 
-SELECT article_id, author, body FROM comments;
+SELECT comment_id, article_id, author, votes
+FROM comments;

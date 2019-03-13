@@ -16,12 +16,3 @@ exports.down = function (knex, Promise) {
   console.log('removing the articles table...');
   return knex.schema.dropTable('articles');
 };
-
-
-// article_id which is the primary key
-// title
-// body
-// votes defaults to 0
-// topic field which references the slug in the articles table
-// author field that references a user's primary key (username)
-// created_at defaults to the current date

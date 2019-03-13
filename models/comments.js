@@ -11,4 +11,19 @@ const postComment = newComment => connection
   .into('comments')
   .returning('*');
 
-module.exports = { fetchComments, postComment };
+const amendVotes = (comment_id, votes) => connection
+  .select('*')
+  .from('comments')
+  .where(comment_id)
+  .increment('votes', votes)
+  .returning('*');
+
+const delComment = comment_id => connection
+  .select('*')
+  .from('comments')
+  .where(comment_id)
+  .del();
+
+module.exports = {
+  fetchComments, postComment, amendVotes, delComment,
+};

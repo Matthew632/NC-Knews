@@ -222,5 +222,23 @@ describe('/api', () => {
           'body',
         );
       }));
+    it('PATCH status:200 responds with patched comment object', () => request
+      .patch('/api/comments/1').send({ inc_votes: -2 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.comment[0]).to.contain.keys(
+          'article_id',
+          'author',
+          'created_at',
+          'comment_id',
+          'votes',
+          'body',
+        );
+        expect(response.body.comment[0].votes).to.eql(14);
+      }));
+    it('check comment delete', () => request
+      .delete('/api/comments/2')
+      .expect(204));
   });
 });
