@@ -29,6 +29,12 @@ const patchVotes = (article_id, votes) => connection
   .increment('votes', votes)
   .returning('*');
 
+const delArticle = article_id => connection
+  .select('*')
+  .from('articles')
+  .where(article_id)
+  .del();
+
 module.exports = {
-  fetchArticles, fetchArticle, postArticle, patchVotes,
+  fetchArticles, fetchArticle, postArticle, patchVotes, delArticle,
 };

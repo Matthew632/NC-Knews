@@ -1,5 +1,5 @@
 const {
-  fetchArticles, fetchArticle, postArticle, patchVotes,
+  fetchArticles, fetchArticle, postArticle, patchVotes, delArticle,
 } = require('../models/articles');
 
 function getArticles(req, res, next) {
@@ -32,14 +32,18 @@ function insertArticle(req, res, next) {
 }
 
 function patchArticle(req, res, next) {
-  // const { article_id } = req.params;
   const { inc_votes } = req.body;
   patchVotes(req.params, inc_votes).then((patchedArticle) => {
-    console.log('patched article', patchedArticle);
-    res.status(201).send({ article: patchedArticle });
+    res.status(200).send({ article: patchedArticle });
+  });
+}
+
+function deleteArticle(req, res, next) {
+  delArticle(req.params).then(() => {
+    res.sendStatus(204);
   });
 }
 
 module.exports = {
-  getArticles, getArticle, insertArticle, patchArticle,
+  getArticles, getArticle, insertArticle, patchArticle, deleteArticle,
 };

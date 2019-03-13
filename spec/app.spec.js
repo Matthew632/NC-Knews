@@ -166,7 +166,7 @@ describe('/api', () => {
       }));
     it('check the patch to increment article votes', () => request
       .patch('/api/articles/7').send({ inc_votes: 4 })
-      .expect(201)
+      .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
         expect(response.body.article).to.have.lengthOf(1);
@@ -181,5 +181,8 @@ describe('/api', () => {
         );
         expect(response.body.article[0].votes).to.eql(4);
       }));
+    it('check article delete', () => request
+      .delete('/api/articles/7')
+      .expect(204));
   });
 });

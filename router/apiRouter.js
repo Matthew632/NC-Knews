@@ -1,7 +1,7 @@
 const apiRouter = require('express').Router();
 const { getTopics, insertTopic } = require('../controllers/topics.js');
 const {
-  getArticles, getArticle, insertArticle, patchArticle,
+  getArticles, getArticle, insertArticle, patchArticle, deleteArticle,
 } = require('../controllers/articles.js');
 
 apiRouter.route('/topics')
@@ -10,7 +10,8 @@ apiRouter.route('/topics')
 
 apiRouter.route('/articles/:article_id')
   .get(getArticle)
-  .patch(patchArticle);
+  .patch(patchArticle)
+  .delete(deleteArticle);
 
 apiRouter.route('/articles')
   .get(getArticles)
