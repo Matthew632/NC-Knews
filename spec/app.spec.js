@@ -206,5 +206,21 @@ describe('/api', () => {
           'comment_id', 'votes', 'created_at', 'author', 'body',
         );
       }));
+    it('POST status:201 responds with inserted comment object', () => request
+      .post('/api/articles/5/comments').send({
+        username: 'icellusedkars', body: 'some words',
+      })
+      .expect(201)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.comment[0]).to.contain.keys(
+          'article_id',
+          'author',
+          'created_at',
+          'comment_id',
+          'votes',
+          'body',
+        );
+      }));
   });
 });

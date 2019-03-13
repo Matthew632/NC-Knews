@@ -6,6 +6,9 @@ const fetchComments = (params, sort_by = 'comment_id', order = 'desc') => connec
   .where(params)
   .orderBy(sort_by, order);
 
-const postComment = () => { };
+const postComment = newComment => connection
+  .insert(newComment)
+  .into('comments')
+  .returning('*');
 
 module.exports = { fetchComments, postComment };
