@@ -147,6 +147,23 @@ describe('/api', () => {
           'body',
         );
       }));
+    it('check specific article is returned', () => request
+      .get('/api/articles/7')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.article).to.have.lengthOf(1);
+        expect(response.body.article[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+        expect(response.body.article[0].title).to.eql('Z');
+      }));
   });
 });
 
