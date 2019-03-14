@@ -13,6 +13,11 @@ function handle404(err, req, res, next) {
   next(err);
 }
 
+// this is not error handling middleware, just regular middleware
+function handle405(req, res, next) {
+  res.status(405).send({ msg: 'Method Not Allowed' });
+}
+
 function handle422(err, req, res, next) {
   if (err.code === '23505') res.status(422).send({ msg: 'Unprocessable entity' });
   next(err);
@@ -25,5 +30,5 @@ function handle500(err, req, res, next) {
 
 
 module.exports = {
-  handle400, handle404, handle422, handle500,
+  handle400, handle404, handle405, handle422, handle500,
 };

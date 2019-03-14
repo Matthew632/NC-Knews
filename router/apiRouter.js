@@ -7,34 +7,42 @@ const {
   getComments, insertComment, patchComment, deleteComment,
 } = require('../controllers/comments.js');
 const { getUsers, insertUser, getUser } = require('../controllers/users.js');
+const { handle405 } = require('../errors.js');
 
 apiRouter.route('/topics')
   .get(getTopics)
-  .post(insertTopic);
+  .post(insertTopic)
+  .all(handle405);
 
 apiRouter.route('/articles/:article_id/comments')
   .get(getComments)
-  .post(insertComment);
+  .post(insertComment)
+  .all(handle405);
 
 apiRouter.route('/comments/:comment_id')
   .patch(patchComment)
-  .delete(deleteComment);
+  .delete(deleteComment)
+  .all(handle405);
 
 apiRouter.route('/articles/:article_id')
   .get(getArticle)
   .patch(patchArticle)
-  .delete(deleteArticle);
+  .delete(deleteArticle)
+  .all(handle405);
 
 apiRouter.route('/articles')
   .get(getArticles)
-  .post(insertArticle);
+  .post(insertArticle)
+  .all(handle405);
 
 apiRouter.route('/users/:username')
-  .get(getUser);
+  .get(getUser)
+  .all(handle405);
 
 apiRouter.route('/users')
   .get(getUsers)
-  .post(insertUser);
+  .post(insertUser)
+  .all(handle405);
 
 
 module.exports = apiRouter;

@@ -324,5 +324,23 @@ describe('/api', () => {
       .then((response) => {
         expect(response.body.msg).to.eql('Unprocessable entity');
       }));
+    it('POST status:422 responds with error message when dupliacte slug is posted', () => request
+      .post('/api/topics').send({ slug: 'mitch', description: 'some words' })
+      .expect(422)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Unprocessable entity');
+      }));
+    describe('405 errors', () => {
+      it('POST status:405 responds with error message when invalid method is attempted', () => request
+        .patch('/api/topics')
+        .then((response) => {
+          expect(response.body.msg).to.eql('Method Not Allowed');
+        }));
+      it('POST status:405 responds with error message when invalid method is attempted', () => request
+        .delete('/api/articles')
+        .then((response) => {
+          expect(response.body.msg).to.eql('Method Not Allowed');
+        }));
+    });
   });
 });

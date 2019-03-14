@@ -12,7 +12,8 @@ function getArticles(req, res, next) {
 
   fetchArticles(query, sort_by, order).then((fetchedArticles) => {
     res.status(200).send({ articles: fetchedArticles });
-  });
+  })
+    .catch(next);
 }
 
 function getArticle(req, res, next) {
@@ -30,20 +31,23 @@ function insertArticle(req, res, next) {
   };
   postArticle(insertArt).then((postedArticle) => {
     res.status(201).send({ article: postedArticle });
-  });
+  })
+    .catch(next);
 }
 
 function patchArticle(req, res, next) {
   const { inc_votes } = req.body;
   patchVotes(req.params, inc_votes).then((patchedArticle) => {
     res.status(200).send({ article: patchedArticle });
-  });
+  })
+    .catch(next);
 }
 
 function deleteArticle(req, res, next) {
   delArticle(req.params).then(() => {
     res.sendStatus(204);
-  });
+  })
+    .catch(next);
 }
 
 module.exports = {
