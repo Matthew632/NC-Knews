@@ -19,7 +19,8 @@ function insertUser(req, res, next) {
   postUser(req.body).then((postedUser) => {
     console.log(postedUser);
     res.status(201).send({ user: postedUser });
-  });
+  })
+    .catch(next);
 }
 
 

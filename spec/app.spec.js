@@ -310,7 +310,7 @@ describe('/api', () => {
       }));
   });
   describe('400 errors', () => {
-    it('GET status:404 responds with error message when request is made with a bad user', () => request
+    it('GET status:400 responds with error message when request is made with string rather than integer', () => request
       .get('/api/articles/abc')
       .expect(400)
       .then((response) => {
@@ -322,7 +322,7 @@ describe('/api', () => {
       .post('/api/users').send({ username: 'icellusedkars', avatar_url: 'www.example.com', name: 'steve' })
       .expect(422)
       .then((response) => {
-        expect(response.body.msg).to.eql('Bad Request');
+        expect(response.body.msg).to.eql('Unprocessable entity');
       }));
   });
 });

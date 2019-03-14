@@ -1,7 +1,3 @@
-function handleAll(req, res, next) {
-  res.status(404).send({ msg: 'Route not found' });
-}
-
 function handle400(err, req, res, next) {
   const codes = {
     23502: 'violates not null violation',
@@ -17,6 +13,11 @@ function handle404(err, req, res, next) {
   next(err);
 }
 
+function handle422(err, req, res, next) {
+  if (err.code === '23505') res.status(422).send({ msg: 'Unprocessable entity' });
+  next(err);
+}
+
 function handle500(err, req, res, next) {
   console.log(err);
   res.status(500).send({ msg: 'Internal Server Error' });
@@ -24,5 +25,5 @@ function handle500(err, req, res, next) {
 
 
 module.exports = {
-  handle400, handle404, handle500, handleAll,
+  handle400, handle404, handle422, handle500,
 };
