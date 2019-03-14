@@ -1,14 +1,17 @@
 const {
   fetchComments, postComment, amendVotes, delComment,
 } = require('../models/comments');
+const { fetchArticle } = require('../models/articles');
 
 function getComments(req, res, next) {
   const { sort_by } = req.query;
   const { order } = req.query;
-  fetchComments(req.params, sort_by, order).then((fetchedComments) => {
-    if (fetchedComments.length === 0) next({ code: 404, msg: 'Comments not found' });
-    res.status(200).send({ comments: fetchedComments });
-  })
+  Promise.all([fetchComments(req.params, sort_by, order), fetchArticle({ 'articles.article_id': req.params.article_id })])
+    .then(([fetchedComments, fetchedArticle]) => {
+      if (fetchedArticle.length === 0) next({ code: 404, msg: 'Article not found' });
+      if (fetchedComments.length === 0) next({ code: 404, msg: 'Comments not found' });
+      res.status(200).send({ comments: fetchedComments });
+    })
     .catch(next);
 }
 

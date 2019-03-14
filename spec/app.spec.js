@@ -303,15 +303,27 @@ describe('/api', () => {
         expect(response.body.msg).to.eql('Article not found');
       }));
     it('GET status:404 responds with error message when request is made with a bad article ref', () => request
-      .get('/api/articles/12345/comments')
+      .get('/api/articles/3/comments')
       .expect(404)
       .then((response) => {
         expect(response.body.msg).to.eql('Comments not found');
+      }));
+    it('GET status:404 responds with error message when comments are requested for a valid but non-existing article', () => request
+      .get('/api/articles/12345/comments')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Article not found');
       }));
   });
   describe('400 errors', () => {
     it('GET status:400 responds with error message when request is made with string rather than integer', () => request
       .get('/api/articles/abc')
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Bad Request');
+      }));
+    it('GET status:400 responds when comments with an invalid article id are requested', () => request
+      .get('/api/articles/zzzzzz/comments')
       .expect(400)
       .then((response) => {
         expect(response.body.msg).to.eql('Bad Request');
@@ -338,6 +350,11 @@ describe('/api', () => {
         }));
       it('POST status:405 responds with error message when invalid method is attempted', () => request
         .delete('/api/articles')
+        .then((response) => {
+          expect(response.body.msg).to.eql('Method Not Allowed');
+        }));
+      it('POST status:405 responds with error message when invalid method is attempted', () => request
+        .post('/api/articles/2')
         .then((response) => {
           expect(response.body.msg).to.eql('Method Not Allowed');
         }));
