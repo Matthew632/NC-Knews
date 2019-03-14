@@ -279,4 +279,50 @@ describe('/api', () => {
         expect(response.body.user[0].name).to.eql('sam');
       }));
   });
+  describe('error handling', () => {
+    describe('non valid route', () => {
+      it('GET status:404 responds with error message when route is invalid', () => request
+        .get('/badroute')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Route not found');
+        }));
+    });
+  });
+  describe('404 valid get requests for records that do not exist', () => {
+    it('GET status:404 responds with error message when request is made with a bad user', () => request
+      .get('/api/users/abc')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).to.eql('User not found');
+      }));
+    it('GET status:404 responds with error message when request is made with a bad article', () => request
+      .get('/api/articles/12345')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Article not found');
+      }));
+    it('GET status:404 responds with error message when request is made with a bad article ref', () => request
+      .get('/api/articles/12345/comments')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Comments not found');
+      }));
+  });
+  describe('400 errors', () => {
+    it('GET status:404 responds with error message when request is made with a bad user', () => request
+      .get('/api/articles/abc')
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Bad Request');
+      }));
+  });
+  describe('422 errors', () => {
+    it('POST status:422 responds with error message when dupliacte listing is posted', () => request
+      .post('/api/users').send({ username: 'icellusedkars', avatar_url: 'www.example.com', name: 'steve' })
+      .expect(422)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Bad Request');
+      }));
+  });
 });
