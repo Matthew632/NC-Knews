@@ -9,6 +9,9 @@ function getArticles(req, res, next) {
   let { sort_by } = req.query;
   const { order } = req.query;
   const query = {}; let author = {}; let topic = {};
+  const columns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
+  if (sort_by !== undefined && columns.every(col => sort_by !== col)) next({ code: 400, msg: 'Specified sort_by column does not exist' });
+  if (order !== undefined && order !== 'asc' && order !== 'desc') next({ code: 400, msg: 'Order must be asc or desc' });
   if (req.query.author) { query['articles.author'] = req.query.author; author = { username: req.query.author }; }
   if (req.query.topic) { query['articles.topic'] = req.query.topic; topic = { slug: req.query.topic }; }
   if (sort_by !== undefined && sort_by !== 'comment_count') { sort_by = `articles.${sort_by}`; }

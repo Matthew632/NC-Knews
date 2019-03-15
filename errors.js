@@ -2,9 +2,9 @@ function handle400(err, req, res, next) {
   const codes = {
     23502: 'violates not null violation',
     '22P02': 'invalid input syntax for type integer',
-
   };
   if (codes[err.code]) res.status(400).send({ msg: 'Bad Request' });
+  if (err.code === 400) res.status(400).send({ msg: err.msg });
   else next(err);
 }
 

@@ -288,103 +288,118 @@ describe('/api', () => {
           expect(response.body.msg).to.eql('Route not found');
         }));
     });
-  });
-  describe('404 valid get requests for records that do not exist', () => {
-    it('GET status:404 responds with error message when request is made with a bad user', () => request
-      .get('/api/users/abc')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).to.eql('User not found');
-      }));
-    it('GET status:404 responds with error message when request is made with a bad article', () => request
-      .get('/api/articles/12345')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Article not found');
-      }));
-    it('GET status:404 responds with error message when request is made with a bad article ref', () => request
-      .get('/api/articles/3/comments')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Comments not found');
-      }));
-    it('GET status:404 responds with error message when comments are requested for a valid but non-existing article', () => request
-      .get('/api/articles/12345/comments')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Article not found');
-      }));
-    it('GET status:404 responds with error message on unavaliable route', () => request
-      .get('/api/asdfghjkl')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Route not found');
-      }));
-    it('GET status: 404 responds with message if author does not exist', () => request
-      .get('/api/articles?author=zzzzzz')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Author not found');
-      }));
-    it('GET status: 404 responds with message if topic does not exist', () => request
-      .get('/api/articles?topic=zzzzzz')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Topic not found');
-      }));
-  });
-  describe('400 errors', () => {
-    it('GET status:400 responds with error message when request is made with string rather than integer', () => request
-      .get('/api/articles/abc')
-      .expect(400)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Bad Request');
-      }));
-    it('POST status:400 responds with error message when post request is missing required key', () => request
-      .post('/api/topics').send({ description: 'example body text' })
-      .expect(400)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Bad Request');
-      }));
-    it('POST status:400 responds with error message when post request is missing required key', () => request
-      .post('/api/topics').send({ slug: 'example body text' })
-      .expect(400)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Bad Request');
-      }));
-    it('GET status:400 responds when comments with an invalid article id are requested', () => request
-      .get('/api/articles/zzzzzz/comments')
-      .expect(400)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Bad Request');
-      }));
-  });
-  describe('422 errors', () => {
-    it('POST status:422 responds with error message when dupliacte listing is posted', () => request
-      .post('/api/users').send({ username: 'icellusedkars', avatar_url: 'www.example.com', name: 'steve' })
-      .expect(422)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Unprocessable entity');
-      }));
-    it('POST status:422 responds with error message when dupliacte slug is posted', () => request
-      .post('/api/topics').send({ slug: 'mitch', description: 'some words' })
-      .expect(422)
-      .then((response) => {
-        expect(response.body.msg).to.eql('Unprocessable entity');
-      }));
+    describe('404 valid get requests for records that do not exist', () => {
+      it('GET status:404 responds with error message when request is made with a bad user', () => request
+        .get('/api/users/abc')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('User not found');
+        }));
+      it('GET status:404 responds with error message when request is made with a bad article', () => request
+        .get('/api/articles/12345')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Article not found');
+        }));
+      it('GET status:404 responds with error message when request is made with a bad article ref', () => request
+        .get('/api/articles/3/comments')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Comments not found');
+        }));
+      it('GET status:404 responds with error message when comments are requested for a valid but non-existing article', () => request
+        .get('/api/articles/12345/comments')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Article not found');
+        }));
+      it('GET status:404 responds with error message on unavaliable route', () => request
+        .get('/api/asdfghjkl')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Route not found');
+        }));
+      it('GET status: 404 responds with message if author does not exist', () => request
+        .get('/api/articles?author=zzzzzz')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Author not found');
+        }));
+      it('GET status: 404 responds with message if topic does not exist', () => request
+        .get('/api/articles?topic=zzzzzz')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Topic not found');
+        }));
+    });
+    describe('400 errors', () => {
+      it('GET status:400 responds with error message when invalid sort_by column is requested', () => request
+        .get('/api/articles?sort_by=zzzzzz')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Specified sort_by column does not exist');
+        }));
+      it('GET status:400 responds with error message when invalid order is requested', () => request
+        .get('/api/articles?order=zzz')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Order must be asc or desc');
+        }));
+      it('GET status:400 responds with error message when request is made with string rather than integer', () => request
+        .get('/api/articles/abc')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Bad Request');
+        }));
+      it('POST status:400 responds with error message when post request is missing required key', () => request
+        .post('/api/topics').send({ description: 'example body text' })
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Bad Request');
+        }));
+      it('POST status:400 responds with error message when post request is missing required key', () => request
+        .post('/api/topics').send({ slug: 'example body text' })
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Bad Request');
+        }));
+      it('GET status:400 responds when comments with an invalid article id are requested', () => request
+        .get('/api/articles/zzzzzz/comments')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Bad Request');
+        }));
+    });
+    describe('422 errors', () => {
+      it('POST status:422 responds with error message when dupliacte listing is posted', () => request
+        .post('/api/users').send({ username: 'icellusedkars', avatar_url: 'www.example.com', name: 'steve' })
+        .expect(422)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Unprocessable entity');
+        }));
+      it('POST status:422 responds with error message when dupliacte slug is posted', () => request
+        .post('/api/topics').send({ slug: 'mitch', description: 'some words' })
+        .expect(422)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Unprocessable entity');
+        }));
+    });
     describe('405 errors', () => {
       it('POST status:405 responds with error message when invalid method is attempted', () => request
         .patch('/api/topics')
+        .expect(405)
         .then((response) => {
           expect(response.body.msg).to.eql('Method Not Allowed');
         }));
       it('POST status:405 responds with error message when invalid method is attempted', () => request
         .delete('/api/articles')
+        .expect(405)
         .then((response) => {
           expect(response.body.msg).to.eql('Method Not Allowed');
         }));
       it('POST status:405 responds with error message when invalid method is attempted', () => request
         .post('/api/articles/2')
+        .expect(405)
         .then((response) => {
           expect(response.body.msg).to.eql('Method Not Allowed');
         }));
