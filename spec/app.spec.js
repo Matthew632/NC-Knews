@@ -326,6 +326,12 @@ describe('/api', () => {
       .then((response) => {
         expect(response.body.msg).to.eql('Author not found');
       }));
+    it('GET status: 404 responds with message if topic does not exist', () => request
+      .get('/api/articles?topic=zzzzzz')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Topic not found');
+      }));
   });
   describe('400 errors', () => {
     it('GET status:400 responds with error message when request is made with string rather than integer', () => request

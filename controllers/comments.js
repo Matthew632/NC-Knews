@@ -6,9 +6,6 @@ const { fetchArticle } = require('../models/articles');
 function getComments(req, res, next) {
   const { sort_by } = req.query;
   const { order } = req.query;
-
-  console.log({ 'articles.article_id': req.params.article_id });
-
   Promise.all([fetchComments(req.params, sort_by, order), fetchArticle({ 'articles.article_id': req.params.article_id })])
     .then(([fetchedComments, fetchedArticle]) => {
       if (fetchedArticle.length === 0) next({ code: 404, msg: 'Article not found' });

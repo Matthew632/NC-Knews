@@ -4,10 +4,10 @@ const fetchTopics = () => connection
   .select('*')
   .from('topics');
 
-const checkTopic = top => connection
+const checkTopic = topic => connection
   .select('*')
   .from('topics')
-  .where({ slug: top })
+  .where(topic)
   .returning('*');
 
 const postTopic = req => connection
