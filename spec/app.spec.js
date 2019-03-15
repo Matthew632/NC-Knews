@@ -66,6 +66,28 @@ describe('/api', () => {
           'comment_count',
         );
       }));
+    it('check query on articles with topic that does not exist returns object with empty array', () => request
+      .post('/api/users').send({ username: 'steve123', avatar_url: 'www.example.com', name: 'steve' })
+      .expect(201)
+      .then((resp) => {
+        request.get('/api/articles?topic=steve123')
+          .then((response) => {
+            expect(200);
+            expect(response.body).to.be.an('object');
+            expect(response.body.articles).to.have.lengthOf(0);
+          });
+      }));
+    it('check query on articles with topic that does not exist returns object with empty array', () => request
+      .post('/api/topics').send({ slug: 'snail', description: 'example body text' })
+      .expect(201)
+      .then((resp) => {
+        request.get('/api/articles?topic=zzzzzzz')
+          .then((response) => {
+            expect(200);
+            expect(response.body).to.be.an('object');
+            expect(response.body.articles).to.have.lengthOf(0);
+          });
+      }));
     it('check topic query on articles', () => request
       .get('/api/articles?topic=mitch')
       .expect(200)
