@@ -29,7 +29,7 @@ function getArticle(req, res, next) {
   const params = { 'articles.article_id': req.params.article_id };
   fetchArticle(params).then((fetchedArticle) => {
     if (fetchedArticle.length === 0) next({ code: 404, msg: 'Article not found' });
-    res.status(200).send({ article: fetchedArticle });
+    res.status(200).send({ article: fetchedArticle[0] });
   })
     .catch(next);
 }

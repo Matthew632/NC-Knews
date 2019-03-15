@@ -1,12 +1,12 @@
 function formatDate(objArr) {
   return objArr.reduce((acc, obj) => {
-    const newObj = obj;
+    const newObj = { ...obj };
     const d = new Date(newObj.created_at);
     const year = d.getFullYear();
     const month = (`0${d.getMonth() + 1}`).slice(-2);
     const day = (`0${d.getDate()}`).slice(-2);
-    const r = `${year}-${month}-${day}`;
-    newObj.created_at = r;
+    const result = `${year}-${month}-${day}`;
+    newObj.created_at = result;
     acc.push(newObj);
     return acc;
   }, []);

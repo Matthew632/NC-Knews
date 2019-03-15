@@ -174,8 +174,8 @@ describe('/api', () => {
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.article).to.have.lengthOf(1);
-        expect(response.body.article[0]).to.contain.keys(
+        expect(response.body.article).to.be.an('object');
+        expect(response.body.article).to.contain.keys(
           'author',
           'title',
           'article_id',
@@ -184,7 +184,6 @@ describe('/api', () => {
           'votes',
           'comment_count',
         );
-        expect(response.body.article[0].title).to.eql('Z');
       }));
     it('check the patch to increment article votes', () => request
       .patch('/api/articles/7').send({ inc_votes: 4 })
@@ -227,6 +226,13 @@ describe('/api', () => {
         expect(response.body.comments[0]).to.contain.keys(
           'comment_id', 'votes', 'created_at', 'author', 'body',
         );
+      }));
+    it.only('GET status:404 responds with error message when request is made with a bad article ref', () => request
+      .get('/api/articles/3/comments')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.comments).to.have.lengthOf(0);
       }));
     it('POST status:201 responds with inserted comment object', () => request
       .post('/api/articles/5/comments').send({
@@ -322,12 +328,6 @@ describe('/api', () => {
         .expect(404)
         .then((response) => {
           expect(response.body.msg).to.eql('Article not found');
-        }));
-      it('GET status:404 responds with error message when request is made with a bad article ref', () => request
-        .get('/api/articles/3/comments')
-        .expect(404)
-        .then((response) => {
-          expect(response.body.msg).to.eql('Comments not found');
         }));
       it('GET status:404 responds with error message when comments are requested for a valid but non-existing article', () => request
         .get('/api/articles/12345/comments')

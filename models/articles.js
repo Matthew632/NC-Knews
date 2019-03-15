@@ -1,6 +1,6 @@
 const connection = require('../db/connection');
 
-const fetchArticles = (query, sort_by = 'articles.article_id', order = 'desc') => connection
+const fetchArticles = (query, sort_by = 'articles.created_at', order = 'desc') => connection
   .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
   .count('comments.article_id as comment_count')
   .from('articles')

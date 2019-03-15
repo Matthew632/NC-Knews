@@ -9,7 +9,6 @@ function getComments(req, res, next) {
   Promise.all([fetchComments(req.params, sort_by, order), fetchArticle({ 'articles.article_id': req.params.article_id })])
     .then(([fetchedComments, fetchedArticle]) => {
       if (fetchedArticle.length === 0) next({ code: 404, msg: 'Article not found' });
-      if (fetchedComments.length === 0) next({ code: 404, msg: 'Comments not found' });
       res.status(200).send({ comments: fetchedComments });
     })
     .catch(next);
