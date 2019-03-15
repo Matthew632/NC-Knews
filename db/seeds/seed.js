@@ -8,11 +8,10 @@ exports.seed = function (knex, Promise) {
   return knex.migrate
     .rollback()
     .then(() => knex.migrate.latest())
-    .then(() => knex('topics')
-      .insert(topicData)
-      .returning('*'))
     .then((insertedTopics) => {
-      const topicInsertions = insertedTopics;
+      const topicInsertions = knex('topics')
+        .insert(topicData)
+        .returning('*');
       const userInsertions = knex('users')
         .insert(userData)
         .returning('*');

@@ -19,8 +19,8 @@ function getArticles(req, res, next) {
   Promise.all([fetchArticles(query, sort_by, order), fetchUser(author), checkTopic(topic)])
     .then(([fetchedArticles, fetchedUser, fetchedTopic]) => {
       if (fetchedTopic.length === 0) next({ code: 404, msg: 'Topic not found' });
-      if (fetchedUser.length === 0) next({ code: 404, msg: 'Author not found' });
-      res.status(200).send({ articles: fetchedArticles });
+      else if (fetchedUser.length === 0) next({ code: 404, msg: 'Author not found' });
+      else res.status(200).send({ articles: fetchedArticles });
     })
     .catch(next);
 }
@@ -39,15 +39,16 @@ function insertArticle(req, res, next) {
     title: req.body.title, body: req.body.body, topic: req.body.topic, author: req.body.username,
   };
   postArticle(insertArt).then((postedArticle) => {
-    res.status(201).send({ article: postedArticle });
+    res.status(201).send({ article: postedArticle[0] });
   })
     .catch(next);
 }
 
 function patchArticle(req, res, next) {
   const { inc_votes } = req.body;
+  if (typeof inc_votes !== 'number') next({ code: 400, msg: 'Votes must be an integer' });
   patchVotes(req.params, inc_votes).then((patchedArticle) => {
-    res.status(200).send({ article: patchedArticle });
+    res.status(200).send({ article: patchedArticle[0] });
   })
     .catch(next);
 }

@@ -227,7 +227,7 @@ describe('/api', () => {
           'comment_id', 'votes', 'created_at', 'author', 'body',
         );
       }));
-    it.only('GET status:404 responds with error message when request is made with a bad article ref', () => request
+    it('GET status:404 responds with error message when request is made with a bad article ref', () => request
       .get('/api/articles/3/comments')
       .expect(200)
       .then((response) => {
@@ -355,6 +355,12 @@ describe('/api', () => {
         }));
     });
     describe('400 errors', () => {
+      it.only('PATCH status:200 responds with patched comment object', () => request
+        .patch('/api/comments/zzz').send({ inc_votes: -2 })
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Bad Request');
+        }));
       it('GET status:400 responds with error message when invalid sort_by column is requested', () => request
         .get('/api/articles?sort_by=zzzzzz')
         .expect(400)
