@@ -314,10 +314,34 @@ describe('/api', () => {
       .then((response) => {
         expect(response.body.msg).to.eql('Article not found');
       }));
+    it('GET status:404 responds with error message on unavaliable route', () => request
+      .get('/api/asdfghjkl')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Route not found');
+      }));
+    it('GET status: 404 responds with message if author does not exist', () => request
+      .get('/api/articles?author=zzzzzz')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Author not found');
+      }));
   });
   describe('400 errors', () => {
     it('GET status:400 responds with error message when request is made with string rather than integer', () => request
       .get('/api/articles/abc')
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Bad Request');
+      }));
+    it('POST status:400 responds with error message when post request is missing required key', () => request
+      .post('/api/topics').send({ description: 'example body text' })
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).to.eql('Bad Request');
+      }));
+    it('POST status:400 responds with error message when post request is missing required key', () => request
+      .post('/api/topics').send({ slug: 'example body text' })
       .expect(400)
       .then((response) => {
         expect(response.body.msg).to.eql('Bad Request');

@@ -1,18 +1,31 @@
 const {
   fetchArticles, fetchArticle, postArticle, patchVotes, delArticle,
 } = require('../models/articles');
+const { checkTopic } = require('../models/topics');
+const { fetchUser } = require('../models/users');
+
 
 function getArticles(req, res, next) {
+  console.log('this is the query:', req.query.author);
   let { sort_by } = req.query;
   const { order } = req.query;
   const query = {};
   if (req.query.author) { query['articles.author'] = req.query.author; }
   if (req.query.topic) { query['articles.topic'] = req.query.topic; }
   if (sort_by !== undefined && sort_by !== 'comment_count') { sort_by = `articles.${sort_by}`; }
+  let author = {};
+  if (req.query.author !== undefined) { author = { username: req.query.author }; }
 
-  fetchArticles(query, sort_by, order).then((fetchedArticles) => {
-    res.status(200).send({ articles: fetchedArticles });
-  })
+  // fetchUser({ username: req.query.author }).then((fetchedUser) => {
+  //   console.log('this is the fetched user:', fetchedUser);
+  // })
+  Promise.all([fetchArticles(query, sort_by, order), fetchUser(author)])
+    .then(([fetchedArticles, fetchedUser]) => {
+      console.log(fetchedArticles);
+      // if (fetchedTopic.length === 0) next({ code: 404, msg: 'Topic not found' });
+      if (fetchedUser.length === 0) next({ code: 404, msg: 'Author not found' });
+      res.status(200).send({ articles: fetchedArticles });
+    })
     .catch(next);
 }
 

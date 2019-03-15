@@ -5,7 +5,6 @@ const fetchUsers = () => connection
   .from('users')
   .returning('*');
 
-
 const fetchUser = params => connection
   .select('*')
   .from('users')
