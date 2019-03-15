@@ -159,7 +159,7 @@ describe('/api', () => {
       .expect(201)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.article[0]).to.contain.keys(
+        expect(response.body.article).to.contain.keys(
           'article_id',
           'author',
           'created_at',
@@ -190,8 +190,7 @@ describe('/api', () => {
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.article).to.have.lengthOf(1);
-        expect(response.body.article[0]).to.contain.keys(
+        expect(response.body.article).to.contain.keys(
           'author',
           'title',
           'article_id',
@@ -200,7 +199,7 @@ describe('/api', () => {
           'votes',
           'body',
         );
-        expect(response.body.article[0].votes).to.eql(4);
+        expect(response.body.article.votes).to.eql(4);
       }));
     it('check article delete', () => request
       .delete('/api/articles/7')
@@ -355,11 +354,17 @@ describe('/api', () => {
         }));
     });
     describe('400 errors', () => {
-      it.only('PATCH status:200 responds with patched comment object', () => request
-        .patch('/api/comments/zzz').send({ inc_votes: -2 })
+      it('PATCH status:400 rejects non integer passed to votes on comments', () => request
+        .patch('/api/comments/7').send({ inc_votes: 'zzz' })
         .expect(400)
         .then((response) => {
-          expect(response.body.msg).to.eql('Bad Request');
+          expect(response.body.msg).to.eql('Votes must be an integer');
+        }));
+      it('PATCH status:400 rejects non integer passed to votes on articles', () => request
+        .patch('/api/articles/2').send({ inc_votes: 'bbb' })
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Votes must be an integer');
         }));
       it('GET status:400 responds with error message when invalid sort_by column is requested', () => request
         .get('/api/articles?sort_by=zzzzzz')

@@ -28,10 +28,14 @@ function insertComment(req, res, next) {
 
 function patchComment(req, res, next) {
   const { inc_votes } = req.body;
-  amendVotes(req.params, inc_votes).then((patchedComment) => {
-    res.status(200).send({ comment: patchedComment });
-  })
-    .catch(next);
+  if (!Number.isInteger(inc_votes)) next({ code: 400, msg: 'Votes must be an integer' });
+  else {
+    amendVotes(req.params, inc_votes).then((patchedComment) => {
+      res.status(200).send({ comment: patchedComment });
+    })
+
+      .catch(next);
+  }
 }
 
 function deleteComment(req, res, next) {

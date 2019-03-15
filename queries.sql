@@ -1,3 +1,3 @@
 \c nc_knews_test;
 
-select * from topics;
+select * from articles;

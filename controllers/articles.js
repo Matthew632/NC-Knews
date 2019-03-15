@@ -46,11 +46,13 @@ function insertArticle(req, res, next) {
 
 function patchArticle(req, res, next) {
   const { inc_votes } = req.body;
-  if (typeof inc_votes !== 'number') next({ code: 400, msg: 'Votes must be an integer' });
-  patchVotes(req.params, inc_votes).then((patchedArticle) => {
-    res.status(200).send({ article: patchedArticle[0] });
-  })
-    .catch(next);
+  if (!Number.isInteger(inc_votes)) next({ code: 400, msg: 'Votes must be an integer' });
+  else {
+    patchVotes(req.params, inc_votes).then((patchedArticle) => {
+      res.status(200).send({ article: patchedArticle[0] });
+    })
+      .catch(next);
+  }
 }
 
 function deleteArticle(req, res, next) {
