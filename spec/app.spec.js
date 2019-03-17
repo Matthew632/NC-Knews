@@ -80,14 +80,13 @@ describe('/api', () => {
     it('check query on articles with topic that does not exist returns object with empty array', () => request
       .post('/api/topics').send({ slug: 'snail', description: 'example body text' })
       .expect(201)
-      .then((resp) => {
-        request.get('/api/articles?topic=zzzzzzz')
-          .then((response) => {
-            expect(200);
-            expect(response.body).to.be.an('object');
-            expect(response.body.articles).to.have.lengthOf(0);
-          });
-      }));
+      .then(() => request
+        .get('/api/articles?topic=snail')
+        .expect(200)
+        .then((response) => {
+          expect(response.body).to.be.an('object');
+          expect(response.body.articles).to.have.lengthOf(0);
+        })));
     it('check topic query on articles', () => request
       .get('/api/articles?topic=mitch')
       .expect(200)
@@ -203,7 +202,14 @@ describe('/api', () => {
       }));
     it('check article delete', () => request
       .delete('/api/articles/7')
-      .expect(204));
+      .expect(204)
+      .then(() => request
+        .get('/api/articles')
+        .expect(200))
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(11);
+      }));
   });
   describe('/articles/:article_id/comments', () => {
     it('GET status:200 responds with an array of comment objects', () => request
