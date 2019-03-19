@@ -56,7 +56,8 @@ function patchArticle(req, res, next) {
 }
 
 function deleteArticle(req, res, next) {
-  delArticle(req.params).then(() => {
+  delArticle(req.params).then((deleteCount) => {
+    if (deleteCount === 0) next({ code: 404, msg: 'Article not found' });
     res.sendStatus(204);
   })
     .catch(next);

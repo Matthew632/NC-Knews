@@ -358,6 +358,18 @@ describe('/api', () => {
         .then((response) => {
           expect(response.body.msg).to.eql('Topic not found');
         }));
+      it('DELETE status: 404 responds with message if article does not exist', () => request
+        .delete('/api/articles/777')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Article not found');
+        }));
+      it('DELETE status: 404 responds with message if comment does not exist', () => request
+        .delete('/api/comments/777')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Comment not found');
+        }));
     });
     describe('400 errors', () => {
       it('PATCH status:400 rejects non integer passed to votes on comments', () => request
