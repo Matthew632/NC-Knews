@@ -384,14 +384,26 @@ describe('/api', () => {
         .then((response) => {
           expect(response.body.msg).to.eql('Votes must be an integer');
         }));
-      it('GET status:400 responds with error message when invalid sort_by column is requested', () => request
+      it('GET status:400 responds with error message when invalid sort_by column is requested on articles', () => request
+        .get('/api/articles/2/comments?sort_by=zzzzzz')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Specified sort_by column does not exist');
+        }));
+      it('GET status:400 responds with error message when invalid sort_by column is requested on comments', () => request
         .get('/api/articles?sort_by=zzzzzz')
         .expect(400)
         .then((response) => {
           expect(response.body.msg).to.eql('Specified sort_by column does not exist');
         }));
-      it('GET status:400 responds with error message when invalid order is requested', () => request
+      it('GET status:400 responds with error message when invalid order is requested on articles', () => request
         .get('/api/articles?order=zzz')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Order must be asc or desc');
+        }));
+      it('GET status:400 responds with error message when invalid order is requested on comments', () => request
+        .get('/api/articles/2/comments?order=zzz')
         .expect(400)
         .then((response) => {
           expect(response.body.msg).to.eql('Order must be asc or desc');
