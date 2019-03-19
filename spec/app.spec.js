@@ -27,7 +27,7 @@ describe('/api', () => {
       .expect(201)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.topics[0]).to.contain.keys(
+        expect(response.body.topics).to.contain.keys(
           'slug',
           'description',
         );
@@ -246,7 +246,7 @@ describe('/api', () => {
       .expect(201)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.comment[0]).to.contain.keys(
+        expect(response.body.comment).to.contain.keys(
           'article_id',
           'author',
           'created_at',
@@ -260,7 +260,7 @@ describe('/api', () => {
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.comment[0]).to.contain.keys(
+        expect(response.body.comment).to.contain.keys(
           'article_id',
           'author',
           'created_at',
@@ -268,7 +268,7 @@ describe('/api', () => {
           'votes',
           'body',
         );
-        expect(response.body.comment[0].votes).to.eql(14);
+        expect(response.body.comment.votes).to.eql(14);
       }));
     it('check comment delete', () => request
       .delete('/api/comments/2')
@@ -292,24 +292,24 @@ describe('/api', () => {
       .expect(201)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.user[0]).to.contain.keys(
+        expect(response.body.user).to.contain.keys(
           'username',
           'avatar_url',
           'name',
         );
-        expect(response.body.user[0].name).to.eql('steve');
+        expect(response.body.user.name).to.eql('steve');
       }));
     it('GET status:200 responds with specific user objects', () => request
       .get('/api/users/icellusedkars')
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.user[0]).to.contain.keys(
+        expect(response.body.user).to.contain.keys(
           'username',
           'avatar_url',
           'name',
         );
-        expect(response.body.user[0].name).to.eql('sam');
+        expect(response.body.user.name).to.eql('sam');
       }));
   });
   describe('error handling', () => {

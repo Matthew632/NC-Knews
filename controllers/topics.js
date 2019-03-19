@@ -9,7 +9,7 @@ function getTopics(req, res, next) {
 
 function insertTopic(req, res, next) {
   postTopic(req.body).then((postedTopic) => {
-    res.status(201).send({ topics: postedTopic });
+    res.status(201).send({ topics: postedTopic[0] });
   })
     .catch(next);
 }

@@ -11,14 +11,14 @@ function getUsers(req, res, next) {
 function getUser(req, res, next) {
   fetchUser(req.params).then((fetchedUser) => {
     if (fetchedUser.length === 0) next({ code: 404, msg: 'User not found' });
-    else res.status(200).send({ user: fetchedUser });
+    else res.status(200).send({ user: fetchedUser[0] });
   })
     .catch(next);
 }
 
 function insertUser(req, res, next) {
   postUser(req.body).then((postedUser) => {
-    res.status(201).send({ user: postedUser });
+    res.status(201).send({ user: postedUser[0] });
   })
     .catch(next);
 }

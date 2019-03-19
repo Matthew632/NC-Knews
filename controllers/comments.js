@@ -21,7 +21,7 @@ function insertComment(req, res, next) {
     article_id: req.params.article_id,
   };
   postComment(newComment).then((postedComment) => {
-    res.status(201).send({ comment: postedComment });
+    res.status(201).send({ comment: postedComment[0] });
   })
     .catch(next);
 }
@@ -31,7 +31,7 @@ function patchComment(req, res, next) {
   if (!Number.isInteger(inc_votes)) next({ code: 400, msg: 'Votes must be an integer' });
   else {
     amendVotes(req.params, inc_votes).then((patchedComment) => {
-      res.status(200).send({ comment: patchedComment });
+      res.status(200).send({ comment: patchedComment[0] });
     })
 
       .catch(next);
