@@ -44,7 +44,7 @@ function patchComment(req, res, next) {
 function deleteComment(req, res, next) {
   delComment(req.params).then((deleteCount) => {
     if (deleteCount === 0) next({ code: 404, msg: 'Comment not found' });
-    res.sendStatus(204);
+    else { res.sendStatus(204); }
   })
     .catch(next);
 }

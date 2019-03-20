@@ -311,6 +311,17 @@ describe('/api', () => {
         );
         expect(response.body.user.name).to.eql('sam');
       }));
+    it('GET status:200 responds with endpoints JSON', () => request
+      .get('/api')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        console.log(response.body);
+        // expect(response.body).to.contain.keys(
+        //   'GET_topics',
+        //   'POST_topics',
+        // );
+      }));
   });
   describe('error handling', () => {
     describe('non valid route', () => {

@@ -8,7 +8,7 @@ exports.seed = function (knex, Promise) {
   return knex.migrate
     .rollback()
     .then(() => knex.migrate.latest())
-    .then((insertedTopics) => {
+    .then(() => {
       const topicInsertions = knex('topics')
         .insert(topicData)
         .returning('*');
