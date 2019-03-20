@@ -4,6 +4,7 @@ const userRouter = require('./userRouter');
 const articleRouter = require('./articleRouter');
 const commentRouter = require('./commentRouter');
 const { handle405 } = require('../errors.js');
+const endpoints = require('../endpoints.json');
 
 apiRouter.use('/topics', topicRouter);
 
@@ -15,7 +16,7 @@ apiRouter.use('/comments', commentRouter);
 
 apiRouter.route('')
   .get((req, res, next) => {
-    res.status(200).send('../endpoints.JSON');
+    res.status(200).json(endpoints);
   })
   .all(handle405);
 
