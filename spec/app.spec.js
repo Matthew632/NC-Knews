@@ -316,11 +316,10 @@ describe('/api', () => {
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        console.log(response.body);
-        // expect(response.body).to.contain.keys(
-        //   'GET_topics',
-        //   'POST_topics',
-        // );
+        expect(response.body).to.contain.keys(
+          'GET_topics',
+          'POST_topic',
+        );
       }));
   });
   describe('error handling', () => {
