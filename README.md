@@ -9,7 +9,7 @@ All available endpoints can be found on the `/api` path.
 
 ## Getting Started
 
-To run the API and its tests locally firstly git clone this directory.
+To run the API and its tests locally first git clone this directory.
 
 Secondly, create a 'knexfile.js' file in the root directory. Mac users should be to omit their PSQL username and password but be sure to include these if you are a Linux user, as below:
 

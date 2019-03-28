@@ -39,7 +39,7 @@ describe('/api', () => {
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.articles).to.have.lengthOf(12);
+        expect(response.body.articles).to.have.lengthOf(10);
         expect(response.body.articles[0]).to.contain.keys(
           'author',
           'title',
@@ -92,7 +92,7 @@ describe('/api', () => {
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.articles).to.have.lengthOf(11);
+        expect(response.body.articles).to.have.lengthOf(10);
         expect(response.body.articles[0]).to.contain.keys(
           'author',
           'title',
@@ -119,12 +119,28 @@ describe('/api', () => {
           'comment_count',
         );
       }));
+    it('check the limit query return the specified length', () => request
+      .get('/api/articles?limit=8')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(8);
+        expect(response.body.articles[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+      }));
     it('check sort_by and order on comment_count column', () => request
       .get('/api/articles?sort_by=comment_count&order=asc')
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.articles).to.have.lengthOf(12);
+        expect(response.body.articles).to.have.lengthOf(10);
         expect(response.body.articles[0]).to.contain.keys(
           'author',
           'title',
@@ -140,7 +156,7 @@ describe('/api', () => {
       .expect(200)
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.articles).to.have.lengthOf(12);
+        expect(response.body.articles).to.have.lengthOf(10);
         expect(response.body.articles[0]).to.contain.keys(
           'author',
           'title',
@@ -208,7 +224,7 @@ describe('/api', () => {
         .expect(200))
       .then((response) => {
         expect(response.body).to.be.an('object');
-        expect(response.body.articles).to.have.lengthOf(11);
+        expect(response.body.articles).to.have.lengthOf(10);
       }));
   });
   describe('/articles/:article_id/comments', () => {
@@ -218,6 +234,16 @@ describe('/api', () => {
       .then((response) => {
         expect(response.body).to.be.an('object');
         expect(response.body.comments).to.have.lengthOf(2);
+        expect(response.body.comments[0]).to.contain.keys(
+          'comment_id', 'votes', 'created_at', 'author', 'body',
+        );
+      }));
+    it('GET status:200 responds with an array of comment objects limited by query', () => request
+      .get('/api/articles/5/comments?limit=1')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.comments).to.have.lengthOf(1);
         expect(response.body.comments[0]).to.contain.keys(
           'comment_id', 'votes', 'created_at', 'author', 'body',
         );
@@ -406,6 +432,19 @@ describe('/api', () => {
         .then((response) => {
           expect(response.body.msg).to.eql('Specified sort_by column does not exist');
         }));
+      it('GET status:400 responds with error message when invalid limit is requested on articles', () => request
+        .get('/api/articles?limit=zzz')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Limit should be a postive integer');
+        }));
+      it('GET status:400 responds with error message when invalid limit is requested on comments', () => request
+        .get('/api/articles/5/comments?limit=-1')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Limit should be a postive integer');
+        }));
+
       it('GET status:400 responds with error message when invalid order is requested on articles', () => request
         .get('/api/articles?order=zzz')
         .expect(400)

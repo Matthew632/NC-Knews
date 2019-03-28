@@ -1,10 +1,11 @@
 const connection = require('../db/connection');
 
-const fetchComments = (params, sort_by = 'comment_id', order = 'desc') => connection
+const fetchComments = (params, sort_by = 'comment_id', order = 'desc', limit = 10) => connection
   .select('comment_id', 'votes', 'created_at', 'author', 'body')
   .from('comments')
   .where(params)
-  .orderBy(sort_by, order);
+  .orderBy(sort_by, order)
+  .limit(limit);
 
 const postComment = newComment => connection
   .insert(newComment)

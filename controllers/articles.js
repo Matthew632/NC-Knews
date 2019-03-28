@@ -8,15 +8,17 @@ const { fetchUser } = require('../models/users');
 function getArticles(req, res, next) {
   let { sort_by } = req.query;
   const { order } = req.query;
+  const { limit } = req.query;
   const query = {}; let author = {}; let topic = {};
   const columns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
+  if (limit !== undefined && !/^(0|[1-9]\d*)$/.test(limit)) next({ code: 400, msg: 'Limit should be a postive integer' });
   if (sort_by !== undefined && columns.every(col => sort_by !== col)) next({ code: 400, msg: 'Specified sort_by column does not exist' });
   if (order !== undefined && order !== 'asc' && order !== 'desc') next({ code: 400, msg: 'Order must be asc or desc' });
   if (req.query.author) { query['articles.author'] = req.query.author; author = { username: req.query.author }; }
   if (req.query.topic) { query['articles.topic'] = req.query.topic; topic = { slug: req.query.topic }; }
   if (sort_by !== undefined && sort_by !== 'comment_count') { sort_by = `articles.${sort_by}`; }
 
-  Promise.all([fetchArticles(query, sort_by, order), fetchUser(author), checkTopic(topic)])
+  Promise.all([fetchArticles(query, sort_by, order, limit), fetchUser(author), checkTopic(topic)])
     .then(([fetchedArticles, fetchedUser, fetchedTopic]) => {
       if (fetchedTopic.length === 0) next({ code: 404, msg: 'Topic not found' });
       else if (fetchedUser.length === 0) next({ code: 404, msg: 'Author not found' });
