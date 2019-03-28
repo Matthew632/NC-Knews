@@ -1,6 +1,6 @@
 # Northcoders News API
 
-This RESTful API connects with a database containing a system of upvoted articles and comments.
+This RESTful API acts as a server for a database containing a system of upvoted articles and comments.
 
 It is hosted online at:
 https://nc-knews-server.herokuapp.com/
