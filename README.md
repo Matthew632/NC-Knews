@@ -1,6 +1,6 @@
 # Northcoders News API
 
-This RESTful API acts as a server for a database containing a system of upvoted articles and comments.
+This RESTful API utilises Express.js and Knex.js to serve data from a PSQL database containing a system of upvoted articles and comments.
 
 It is hosted online at:
 https://nc-knews-server.herokuapp.com/
@@ -56,6 +56,8 @@ module.exports = { ...baseConfig, ...customConfigs[ENV] };
 
 Thirdly, run the following commands in your terminal to setup and seed the database:
 ```
+npm install
+
 npm run setup:dbs
 
 npm run migrate-latest

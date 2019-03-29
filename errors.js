@@ -24,7 +24,6 @@ function handle422(err, req, res, next) {
 }
 
 function handle500(err, req, res, next) {
-  console.log(err);
   res.status(500).send({ msg: 'Internal Server Error' });
 }
 

@@ -70,7 +70,7 @@ describe('/api', () => {
       .post('/api/users').send({ username: 'steve123', avatar_url: 'www.example.com', name: 'steve' })
       .expect(201)
       .then((resp) => {
-        request.get('/api/articles?topic=steve123')
+        request.get('/api/articles?author=steve123')
           .then((response) => {
             expect(200);
             expect(response.body).to.be.an('object');
@@ -343,8 +343,8 @@ describe('/api', () => {
       .then((response) => {
         expect(response.body).to.be.an('object');
         expect(response.body).to.contain.keys(
-          'GET_topics',
-          'POST_topic',
+          'GET topics',
+          'POST topic',
         );
       }));
   });
