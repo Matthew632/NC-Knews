@@ -1,6 +1,6 @@
 const connection = require('../db/connection');
 
-const fetchArticles = (query, sort_by = 'articles.created_at', order = 'desc', limit = 10) => connection
+const fetchArticles = (query, sort_by = 'articles.created_at', order = 'desc', limit, page = 0) => connection
   .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
   .count('comments.article_id as comment_count')
   .from('articles')
@@ -8,7 +8,8 @@ const fetchArticles = (query, sort_by = 'articles.created_at', order = 'desc', l
   .orderBy(sort_by, order)
   .leftJoin('comments', 'comments.article_id', 'articles.article_id')
   .groupBy('articles.article_id')
-  .limit(limit);
+  .limit(limit)
+  .offset(page);
 
 const fetchArticle = params => connection
   .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')

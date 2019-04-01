@@ -151,6 +151,31 @@ describe('/api', () => {
           'comment_count',
         );
       }));
+    it('check page query on articles', () => request
+      .get('/api/articles?sort_by=comment_count&order=asc&limit=3&p=3')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.articles).to.have.lengthOf(3);
+        expect(response.body.articles[0]).to.contain.keys(
+          'author',
+          'title',
+          'article_id',
+          'topic',
+          'created_at',
+          'votes',
+          'comment_count',
+        );
+        expect(response.body.articles[2].comment_count).to.eql('1');
+      }));
+    it('check page query on comments', () => request
+      .get('/api/articles/5/comments?sort_by=votes&order=asc&limit=1&p=2')
+      .expect(200)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.comments).to.have.lengthOf(1);
+        expect(response.body.comments[0].votes).to.eql(16);
+      }));
     it('check sort_by and order', () => request
       .get('/api/articles?sort_by=title&order=asc')
       .expect(200)
@@ -456,6 +481,18 @@ describe('/api', () => {
         .expect(400)
         .then((response) => {
           expect(response.body.msg).to.eql('Order must be asc or desc');
+        }));
+      it('check page query on articles without an integer', () => request
+        .get('/api/articles?sort_by=comment_count&order=asc&limit=3&p=zzz')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Page should be a postive integer');
+        }));
+      it('check page query on comments without an integer', () => request
+        .get('/api/articles/2/comments?sort_by=votes&order=asc&limit=3&p=zzz')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Page should be a postive integer');
         }));
       it('GET status:400 responds with error message when request is made with string rather than integer', () => request
         .get('/api/articles/abc')
