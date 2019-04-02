@@ -12,7 +12,7 @@ const fetchArticles = (query, sort_by = 'articles.created_at', order = 'desc', l
   .offset(page);
 
 const fetchArticle = params => connection
-  .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
+  .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes', 'articles.body')
   .count('comments.article_id as comment_count')
   .from('articles')
   .where(params)

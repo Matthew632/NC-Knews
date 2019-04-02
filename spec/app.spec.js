@@ -223,6 +223,7 @@ describe('/api', () => {
           'created_at',
           'votes',
           'comment_count',
+          'body',
         );
       }));
     it('check the patch to increment article votes', () => request

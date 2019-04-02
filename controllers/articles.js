@@ -11,7 +11,7 @@ function getArticles(req, res, next) {
   let { limit } = req.query;
   const { p } = req.query;
   const query = {}; let author = {}; let topic = {}; let page = 0;
-  const columns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
+  const columns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count', 'body'];
   if (limit !== undefined && !/^(0|[1-9]\d*)$/.test(limit)) next({ code: 400, msg: 'Limit should be a postive integer' });
   if (p !== undefined && !/^(0|[1-9]\d*)$/.test(p)) next({ code: 400, msg: 'Page should be a postive integer' });
   if (limit === undefined) { limit = 10; }
