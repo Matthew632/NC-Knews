@@ -307,6 +307,20 @@ describe('/api', () => {
           'body',
         );
       }));
+    it('POST status:201 responds with inserted comment object - second test', () => request
+      .post('/api/articles/5/comments').send({ username: 'icellusedkars', body: 'this article was a pleasure to read' })
+      .expect(201)
+      .then((response) => {
+        expect(response.body).to.be.an('object');
+        expect(response.body.comment).to.contain.keys(
+          'article_id',
+          'author',
+          'created_at',
+          'comment_id',
+          'votes',
+          'body',
+        );
+      }));
     it('PATCH status:200 responds with patched comment object', () => request
       .patch('/api/comments/1').send({ inc_votes: -2 })
       .expect(200)
