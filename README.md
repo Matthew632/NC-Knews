@@ -3,7 +3,7 @@
 This RESTful API utilises Express.js and Knex.js to serve data from a PSQL database containing a system of upvoted articles and comments.
 
 It is hosted online at:
-https://nc-knews-server.herokuapp.com/
+https://nc-knews-server-main.herokuapp.com/api
 
 All available endpoints can be found on the `/api` path.
 
